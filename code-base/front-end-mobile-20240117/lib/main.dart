@@ -11,7 +11,7 @@ void main() async {
   // Config flavor prod
   AppConfig.create(
     appName: "Prod Flavor Example",
-    baseUrl: "https://dwirandyh.com",
+    baseUrl: "http://localhost:3000",
     primaryColor: Colors.yellow,
     flavor: Flavor.PROD,
   );
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         }
       },
       child: GetMaterialApp(
-        initialRoute: AppRoutes.LOGIN_PAGE,
+        initialRoute: AppRoutes.SIGNUP_PAGE,
         getPages: AppPages.routes,
       )
     );

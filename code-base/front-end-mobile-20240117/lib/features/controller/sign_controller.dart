@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:front_end_mobile_20240117/core/base_controller.dart';
 import 'package:front_end_mobile_20240117/core/utils/validator_util.dart';
+import 'package:front_end_mobile_20240117/data/repository/signup_repository.dart';
+import 'package:front_end_mobile_20240117/data/request/signup_request.dart';
 import 'package:front_end_mobile_20240117/routes/routes.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +19,8 @@ class SignupController extends BaseController {
   RxBool userInvalid = false.obs;
   RxBool passInvalid = false.obs;
   RxBool passConfirmInvalid = false.obs;
+
+  final SignUpRepositoryImpl _signUpRepositoryImpl = Get.find();
 
   void onTogglesShowPass() {
     showPass.value = !showPass.value;
@@ -47,7 +51,11 @@ class SignupController extends BaseController {
     }
 
     if (!userInvalid.value && !passInvalid.value && !passConfirmInvalid.value) {
-      Get.offNamed(AppRoutes.LOGIN_PAGE);
+      _signUpRepositoryImpl.signUp(SignUpRequest(
+          username: userController.text,
+          password: passController.text,
+          confirmPassword: passConfirmController.text));
+      // Get.offNamed(AppRoutes.LOGIN_PAGE);
     }
   }
 }

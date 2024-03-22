@@ -4,7 +4,7 @@ enum Flavor { DEV, STG, PROD }
 
 class AppConfig {
   String appName = "";
-  String baseUrl = "";
+  String baseUrl = "http://localhost:3000";
   MaterialColor primaryColor = Colors.blue;
   Flavor flavor = Flavor.DEV;
 
@@ -12,7 +12,7 @@ class AppConfig {
 
   factory AppConfig.create({
     String appName = "",
-    String baseUrl = "",
+    String baseUrl = "http://localhost:3000",
     MaterialColor primaryColor = Colors.blue,
     Flavor flavor = Flavor.DEV,
   }) {
