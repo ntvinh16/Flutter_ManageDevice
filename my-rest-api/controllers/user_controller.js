@@ -1,4 +1,4 @@
-const { createUser} = require("../services/user_service");
+const { createUser, getAllUser} = require("../services/user_service");
 
 // Controller to get all users
 module.exports = {
@@ -13,4 +13,17 @@ module.exports = {
       });
     }
   },
+
+  getAllUser: async (req, res) => {
+    try {
+      const result = await getAllUser();
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err: err,
+      });
+    }
+  },
 };
+

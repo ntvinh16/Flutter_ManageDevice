@@ -6,7 +6,7 @@ const { Login } = require('../controllers/login_controller');
 
 /* GET quotes listing. */
 
-router.get('/login', Login);
+router.post('/login', Login);
 
 
 module.exports = router;

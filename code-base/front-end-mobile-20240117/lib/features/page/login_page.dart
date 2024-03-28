@@ -25,9 +25,9 @@ class LoginPage extends GetView<LoginController> {
                   padding: const EdgeInsets.all(15),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xffd8d8d8),
+                    color: Color(0xff007CC2),
                   ),
-                  child: const FlutterLogo(),
+                  child: Image.asset('assets/Logo.png', width: 60, height: 60,),
                 ),
               ),
               const Padding(
@@ -91,15 +91,19 @@ class LoginPage extends GetView<LoginController> {
                       )),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 130,
                 width: double.infinity,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "NEW USER? SIGN UP",
-                      style: TextStyle(fontSize: 15, color: Color(0xff888888)),
+                    InkWell(
+                      onTap: controller.handleSignUp,
+                      child: Text(
+                        "NEW USER? SIGN UP",
+                        style: TextStyle(fontSize: 15, color: Color(0xff888888)),
+                        
+                      ),
                     ),
                     Text(
                       "FORGOT PASSWORD?",
@@ -107,7 +111,7 @@ class LoginPage extends GetView<LoginController> {
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

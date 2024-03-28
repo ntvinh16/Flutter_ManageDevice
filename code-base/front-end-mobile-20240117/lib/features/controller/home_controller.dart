@@ -1,25 +1,25 @@
 import 'package:front_end_mobile_20240117/core/base_controller.dart';
-import 'package:front_end_mobile_20240117/core/logger/app_logger.dart';
-import 'package:front_end_mobile_20240117/data/repository/home_repository.dart';
-import 'package:front_end_mobile_20240117/data/request/home_request.dart';
-import 'package:front_end_mobile_20240117/data/response/home_response.dart';
-import 'package:get/get.dart';
+
+class Product {
+  final String name;
+  final double price;
+
+  Product(this.name, this.price);
+}
+
+class CartItem {
+  final Product product;
+  final int quantity;
+
+  CartItem(this.product, this.quantity);
+}
 
 class HomeController extends BaseController {
-final HomeRepositoryImpl _homeRepositoryImpl = Get.find();
 
-  RxString data = RxString("Home Page");
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    _getDataHome();
-  }
-
-  _getDataHome() async {
-    HomeRequest homeRequest = HomeRequest();
-    HomeResponse homeResponse = await _homeRepositoryImpl.getDataHome(homeRequest);
-    AppLogger.i(homeResponse.title);
-  }
+final List<CartItem> cartItems = [
+    CartItem(Product('Product 1', 10.0), 2),
+    CartItem(Product('Product 2', 20.0), 1),
+    CartItem(Product('Product 3', 30.0), 3),
+  ];
+  
 }

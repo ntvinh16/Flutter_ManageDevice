@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end_mobile_20240117/data/enum/agency_enum.dart';
 import 'package:front_end_mobile_20240117/features/controller/sign_controller.dart';
 import 'package:get/get.dart';
 
@@ -19,27 +20,59 @@ class SignupPage extends GetView<SignupController> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xffd8d8d8),
-                  ),
-                  child: const FlutterLogo(),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 60),
-                child: Text(
-                  "Hello\nWelcome Back",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, // Đặt alignment của hàng là center
+                  crossAxisAlignment:
+                      CrossAxisAlignment.end, // Đặt alignment của cột là bottom
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 20), // Khoảng cách giữa 2 phần tử
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xff007CC2),
+                        ),
+                        child: Image.asset(
+                          'assets/Logo.png',
+                          width: 60,
+                          height: 60,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 0), // Khoảng cách giữa 2 phần tử
+                      child: Text(
+                        "Hello\nWelcome Back",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: TextField(
+                  controller: controller.userFullController,
+                  style: const TextStyle(fontSize: 18, color: Colors.black),
+                  decoration: InputDecoration(
+                      labelText: "FULLNAME",
+                      errorText: controller.userFullInvalid.value
+                          ? controller.userFullNameErr
+                          : null,
+                      labelStyle: const TextStyle(
+                          color: Color(0xff888888), fontSize: 15)),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: TextField(
                   controller: controller.userController,
                   style: const TextStyle(fontSize: 18, color: Colors.black),
@@ -53,7 +86,7 @@ class SignupPage extends GetView<SignupController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: Stack(
                   alignment: AlignmentDirectional.centerEnd,
                   children: <Widget>[
@@ -69,7 +102,7 @@ class SignupPage extends GetView<SignupController> {
                           labelStyle: const TextStyle(
                               color: Color(0xff888888), fontSize: 15)),
                     ),
-                   GestureDetector(
+                    GestureDetector(
                         onTap: controller.onTogglesShowPass,
                         child: controller.showPass.value
                             ? const Icon(Icons.visibility)
@@ -78,7 +111,7 @@ class SignupPage extends GetView<SignupController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: Stack(
                   alignment: AlignmentDirectional.centerEnd,
                   children: <Widget>[
@@ -103,7 +136,29 @@ class SignupPage extends GetView<SignupController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: DropdownButton<AgencyEnum>(
+                    value: controller.selectedItem.value,
+                    onChanged: (AgencyEnum? newValue) {
+                      if (newValue != null) {
+                        controller.selectedItem.value = newValue;
+                      }
+                    },
+                    items: controller.items
+                        .map<DropdownMenuItem<AgencyEnum>>((AgencyEnum value) {
+                      return DropdownMenuItem<AgencyEnum>(
+                        value: value,
+                        child: Text(value.name),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -116,6 +171,13 @@ class SignupPage extends GetView<SignupController> {
                         "SIGN UP",
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: InkWell(
+                  onTap: controller.handleSignIn,
+                  child: Text("SIGN IN"),
                 ),
               ),
             ],

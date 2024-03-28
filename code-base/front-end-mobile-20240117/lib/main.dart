@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end_mobile_20240117/flavor/flavor_config.dart';
+import 'package:front_end_mobile_20240117/resource/res_style.dart';
 import 'package:front_end_mobile_20240117/routes/app.dart';
 import 'package:front_end_mobile_20240117/routes/routes.dart';
 import 'package:get/get.dart';
@@ -24,20 +24,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
-      onTap: () {
-        // Call this method here to hide soft keyboard
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus &&
-            currentFocus.focusedChild != null) {
-          FocusManager.instance.primaryFocus!.unfocus();
-        }
-      },
-      child: GetMaterialApp(
-        initialRoute: AppRoutes.SIGNUP_PAGE,
-        getPages: AppPages.routes,
-      )
-    );
+        onTap: () {
+          // Call this method here to hide soft keyboard
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            FocusManager.instance.primaryFocus!.unfocus();
+          }
+        },
+        child: GetMaterialApp(
+          theme: appTheme,
+          initialRoute: AppRoutes.HOME_PAGE,
+          getPages: AppPages.routes,
+        ));
   }
 }
