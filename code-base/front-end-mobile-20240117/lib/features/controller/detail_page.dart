@@ -26,6 +26,22 @@ class DetailController extends BaseController {
   Rx<UserResponse?> selectedUserRequest = Rx(null);
   Rx<UserResponse?> selectedUserBeneficiaries = Rx(null);
 
+  Rx<DateTime?> selectedBuyDate = Rx<DateTime?>(null);
+  Rx<DateTime?> selectedGiveDate = Rx<DateTime?>(null);
+  Rx<DateTime?> selectedPaymentsDate = Rx<DateTime?>(null);
+
+  void selectBuyDate(DateTime? date) {
+    selectedBuyDate.value = date;
+  }
+
+  void selectGiveDate(DateTime? date) {
+    selectedGiveDate.value = date;
+  }
+
+  void selectPaymentsDate(DateTime? date) {
+    selectedPaymentsDate.value = date;
+  }
+
   @override
   void onInit() async {
     // TODO: implement onInit

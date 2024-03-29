@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:front_end_mobile_20240117/core/base_screen_view.dart';
+import 'package:front_end_mobile_20240117/core/utils/common_util.dart';
 import 'package:front_end_mobile_20240117/core/widget/label_widget.dart';
 import 'package:front_end_mobile_20240117/data/enum/agency_enum.dart';
 import 'package:front_end_mobile_20240117/data/enum/status_enum.dart';
@@ -192,8 +194,8 @@ class DetailPage extends GetView<DetailController> {
                     children: [
                       LabelWidget(text: "Mô Tả"),
                       TextField(
-                        minLines: 2,
-                        maxLines: 2,
+                        minLines: 4,
+                        maxLines: 4,
                         controller: null,
                         style:
                             const TextStyle(fontSize: 14, color: Colors.black),
@@ -213,34 +215,83 @@ class DetailPage extends GetView<DetailController> {
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: SizedBox(
                   width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LabelWidget(text: "Người Đề Xuất"),
-                      if (controller.selectedUserRequest.value != null)
-                        DropdownButton<UserResponse>(
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: 12,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              LabelWidget(text: "Người Đề Xuất"),
+                              if (controller.selectedUserRequest.value != null)
+                                DropdownButton<UserResponse>(
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                  value: controller.selectedUserRequest.value,
+                                  onChanged: (UserResponse? newValue) {
+                                    if (newValue != null) {
+                                      controller.selectedUserRequest.value =
+                                          newValue;
+                                    }
+                                  },
+                                  items: controller.userRequests
+                                      .map<DropdownMenuItem<UserResponse>>(
+                                    (UserResponse value) {
+                                      return DropdownMenuItem<UserResponse>(
+                                        value: value,
+                                        child: Text(value.fullname.toString()),
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
+                            ],
                           ),
-                          value: controller.selectedUserRequest.value,
-                          onChanged: (UserResponse? newValue) {
-                            if (newValue != null) {
-                              controller.selectedUserRequest.value = newValue;
-                            }
-                          },
-                          items: controller.userRequests
-                              .map<DropdownMenuItem<UserResponse>>(
-                            (UserResponse value) {
-                              return DropdownMenuItem<UserResponse>(
-                                value: value,
-                                child: Text(value.fullname.toString()),
-                              );
-                            },
-                          ).toList(),
                         ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              LabelWidget(text: "Người Thụ Hưởng"),
+                              if (controller.selectedUserBeneficiaries.value !=
+                                  null)
+                                DropdownButton<UserResponse>(
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                  value: controller
+                                      .selectedUserBeneficiaries.value,
+                                  onChanged: (UserResponse? newValue) {
+                                    if (newValue != null) {
+                                      controller.selectedUserBeneficiaries
+                                          .value = newValue;
+                                    }
+                                  },
+                                  items: controller.userRequests
+                                      .map<DropdownMenuItem<UserResponse>>(
+                                    (UserResponse value) {
+                                      return DropdownMenuItem<UserResponse>(
+                                        value: value,
+                                        child: Text(value.fullname.toString()),
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -259,50 +310,25 @@ class DetailPage extends GetView<DetailController> {
                         style:
                             const TextStyle(fontSize: 14, color: Colors.black),
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(6, 6, 6, 6),
-                            errorText: null,
-                            isCollapsed: true,
-                            labelStyle: const TextStyle(
-                                color: Color(0xff888888), fontSize: 15)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      LabelWidget(text: "Người Thụ Hưởng"),
-                      if (controller.selectedUserBeneficiaries.value != null)
-                        DropdownButton<UserResponse>(
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                          value: controller.selectedUserBeneficiaries.value,
-                          onChanged: (UserResponse? newValue) {
-                            if (newValue != null) {
-                              controller.selectedUserBeneficiaries.value =
-                                  newValue;
-                            }
-                          },
-                          items: controller.userRequests
-                              .map<DropdownMenuItem<UserResponse>>(
-                            (UserResponse value) {
-                              return DropdownMenuItem<UserResponse>(
-                                value: value,
-                                child: Text(value.fullname.toString()),
-                              );
-                            },
-                          ).toList(),
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.fromLTRB(6, 6, 6, 6),
+                          errorText: null,
+                          isCollapsed: true,
+                          prefixText: 'VNĐ:',
+                          prefixStyle: TextStyle(color: Colors.blue),
+                          labelStyle: const TextStyle(
+                              color: Color(0xff888888), fontSize: 15),
                         ),
+                        keyboardType:
+                            TextInputType.number, // Đặt kiểu bàn phím là số
+                        inputFormatters: [
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Chỉ cho phép nhập số
+                          LengthLimitingTextInputFormatter(10),
+                          ThousandsSeparatorInputFormatter(), // Sử dụng hàm để thêm dấu phân tách
+                          ZeroPrefixInputFormatter(),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -359,8 +385,12 @@ class DetailPage extends GetView<DetailController> {
                                   TextFormField(
                                     readOnly:
                                         true, // Đặt readOnly thành true để không cho phép người dùng chỉnh sửa trực tiếp
-                                    controller:
-                                        TextEditingController(text: "Date"),
+                                    controller: TextEditingController(
+                                        text: controller
+                                                    .selectedBuyDate.value !=
+                                                null
+                                            ? "${controller.selectedBuyDate.value!.day}/${controller.selectedBuyDate.value!.month}/${controller.selectedBuyDate.value!.year}"
+                                            : ''),
                                     onTap: () async {
                                       final DateTime? pickedDate =
                                           await showDatePicker(
@@ -369,6 +399,12 @@ class DetailPage extends GetView<DetailController> {
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2101),
                                       );
+                                      if (pickedDate != null &&
+                                          pickedDate !=
+                                              controller
+                                                  .selectedBuyDate.value) {
+                                        controller.selectBuyDate(pickedDate);
+                                      }
                                     },
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
@@ -376,7 +412,10 @@ class DetailPage extends GetView<DetailController> {
                                       labelText: null,
                                       border: OutlineInputBorder(),
                                       suffixIcon: IconButton(
-                                        icon: Icon(Icons.calendar_today),
+                                        icon: Icon(
+                                          Icons.calendar_today,
+                                          size: 24,
+                                        ),
                                         onPressed: () async {
                                           final DateTime? pickedDate =
                                               await showDatePicker(
@@ -387,8 +426,8 @@ class DetailPage extends GetView<DetailController> {
                                           );
                                         },
                                       ),
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(6, 6, 6, 6),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
                                       errorText: null,
                                       isCollapsed: true,
                                       labelStyle: const TextStyle(
@@ -409,19 +448,58 @@ class DetailPage extends GetView<DetailController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   LabelWidget(text: "Ngày Bàn Giao"),
-                                  TextField(
-                                    controller: null,
+                                  TextFormField(
+                                    readOnly:
+                                        true, // Đặt readOnly thành true để không cho phép người dùng chỉnh sửa trực tiếp
+                                    controller: TextEditingController(
+                                        text: controller
+                                                    .selectedGiveDate.value !=
+                                                null
+                                            ? "${controller.selectedGiveDate.value!.day}/${controller.selectedGiveDate.value!.month}/${controller.selectedGiveDate.value!.year}"
+                                            : ''),
+                                    onTap: () async {
+                                      final DateTime? pickedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101),
+                                      );
+                                      if (pickedDate != null &&
+                                          pickedDate !=
+                                              controller
+                                                  .selectedGiveDate.value) {
+                                        controller.selectGiveDate(pickedDate);
+                                      }
+                                    },
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(6, 6, 6, 6),
-                                        errorText: null,
-                                        isCollapsed: true,
-                                        labelStyle: const TextStyle(
-                                            color: Color(0xff888888),
-                                            fontSize: 15)),
+                                      labelText: null,
+                                      border: OutlineInputBorder(),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          Icons.calendar_today,
+                                          size: 24,
+                                        ),
+                                        onPressed: () async {
+                                          final DateTime? pickedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2000),
+                                            lastDate: DateTime(2101),
+                                          );
+                                        },
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      errorText: null,
+                                      isCollapsed: true,
+                                      labelStyle: const TextStyle(
+                                          color: Color(0xff888888),
+                                          fontSize: 15),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -463,19 +541,59 @@ class DetailPage extends GetView<DetailController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   LabelWidget(text: "Ngày Thanh Toán"),
-                                  TextField(
-                                    controller: null,
+                                  TextFormField(
+                                    readOnly:
+                                        true, // Đặt readOnly thành true để không cho phép người dùng chỉnh sửa trực tiếp
+                                    controller: TextEditingController(
+                                        text: controller.selectedPaymentsDate
+                                                    .value !=
+                                                null
+                                            ? "${controller.selectedPaymentsDate.value!.day}/${controller.selectedPaymentsDate.value!.month}/${controller.selectedPaymentsDate.value!.year}"
+                                            : ''),
+                                    onTap: () async {
+                                      final DateTime? pickedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101),
+                                      );
+                                      if (pickedDate != null &&
+                                          pickedDate !=
+                                              controller
+                                                  .selectedPaymentsDate.value) {
+                                        controller
+                                            .selectPaymentsDate(pickedDate);
+                                      }
+                                    },
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(6, 6, 6, 6),
-                                        errorText: null,
-                                        isCollapsed: true,
-                                        labelStyle: const TextStyle(
-                                            color: Color(0xff888888),
-                                            fontSize: 15)),
+                                      labelText: null,
+                                      border: OutlineInputBorder(),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          Icons.calendar_today,
+                                          size: 24,
+                                        ),
+                                        onPressed: () async {
+                                          final DateTime? pickedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2000),
+                                            lastDate: DateTime(2101),
+                                          );
+                                        },
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      errorText: null,
+                                      isCollapsed: true,
+                                      labelStyle: const TextStyle(
+                                          color: Color(0xff888888),
+                                          fontSize: 15),
+                                    ),
                                   ),
                                 ],
                               ),
